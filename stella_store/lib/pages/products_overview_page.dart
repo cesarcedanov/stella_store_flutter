@@ -3,6 +3,7 @@ import '../organisms/products_grid.dart';
 import '../organisms/badge.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart.dart';
+import './cart_page.dart';
 
 enum FilterOptions { FavoritesOnly, All }
 
@@ -48,7 +49,9 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
             ),
             child: IconButton(
               icon: Icon(Icons.shopping_cart),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartPage.routeName);
+              },
             ),
           )
         ],

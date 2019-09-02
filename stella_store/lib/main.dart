@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './pages/products_overview_page.dart';
 import './pages/product_detail_page.dart';
+import './pages/cart_page.dart';
 import './providers/products.dart';
 import './providers/cart.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false, // NEEDS TO BE REMOVED
         title: 'Stella Store',
         theme: ThemeData(
           primaryColor: Color.fromRGBO(50, 150, 195, 1),
@@ -29,6 +31,7 @@ class MyApp extends StatelessWidget {
         home: ProductsOverviewPage(),
         routes: {
           ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
+          CartPage.routeName: (ctx) => CartPage(),
         },
       ),
     );
