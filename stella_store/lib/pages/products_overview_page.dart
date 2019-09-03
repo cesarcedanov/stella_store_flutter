@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './app_drawer.dart';
 import '../organisms/products_grid.dart';
 import '../organisms/badge.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
                 if (selectedValue == FilterOptions.FavoritesOnly) {
                   _showFavoritesOnly = true;
                 } else {
-                  _showFavoritesOnly = true;
+                  _showFavoritesOnly = false;
                 }
               });
             },
@@ -56,6 +57,7 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
           )
         ],
       ),
+      drawer: AppDrawer(),
       body: ProductsGrid(_showFavoritesOnly),
     );
   }
