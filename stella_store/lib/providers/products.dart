@@ -56,18 +56,15 @@ class Products with ChangeNotifier {
     return [..._products];
   }
 
-  // void showFavoritesOnly() {
-  //   _showFavoritesOnly = true;
-  //   notifyListeners();
-  // }
-
-  // void showAll() {
-  //   _showFavoritesOnly = false;
-  //   notifyListeners();
-  // }
-
-  void addProduct(product) {
-    _products.add(product);
+  void addProduct(Product product) {
+    final newProduct = Product(
+      id: DateTime.now().toString(),
+      title: product.title,
+      price: product.price,
+      description: product.description,
+      imageUrl: product.imageUrl,
+    );
+    _products.add(newProduct);
     notifyListeners();
   }
 

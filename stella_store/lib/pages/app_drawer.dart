@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './orders_page.dart';
+import './user_products_page.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -24,6 +25,15 @@ class AppDrawer extends StatelessWidget {
             title: Text('Orders'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(OrdersPage.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.list),
+            title: Text('Manage your products'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(UserProductsPage.routeName);
             },
           )
         ],
