@@ -10,6 +10,7 @@ class EditProductPage extends StatefulWidget {
 }
 
 class _EditProductPageState extends State<EditProductPage> {
+  var _isInit = true;
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
@@ -17,11 +18,37 @@ class _EditProductPageState extends State<EditProductPage> {
   final _formKey = GlobalKey<FormState>();
   var _editedProduct =
       Product(id: null, title: '', price: 0, description: '', imageUrl: '');
+  var _initFormValues = {
+    'title': '',
+    'price': '',
+    'description': '',
+    'imageUrl': '',
+  };
 
   @override
   void initState() {
     _imageUrlFocusNode.addListener(_updateImageUrl);
     super.initState();
+  }
+
+  void didChangeDependencies() {
+    if (_isInit) {
+      final productId = ModalRoute.of(context).settings.arguments as String;
+      if (productId != null) {
+        _editedProduct =
+            Provider.of<Products>(context, listen: false).getById(productId);
+        _initFormValues = {
+          'title': _editedProduct.title,
+          'price': _editedProduct.price.toString(),
+          'description': _editedProduct.description,
+        };
+        _imageUrlController.text = _editedProduct.imageUrl;
+      }
+    }
+
+    _isInit = false;
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -45,7 +72,12 @@ class _EditProductPageState extends State<EditProductPage> {
       return;
     }
     _formKey.currentState.save();
-    Provider.of<Products>(context).addProduct(_editedProduct);
+    if (_editedProduct.id != null) {
+      Provider.of<Products>(context)
+          .updateProduct(_editedProduct.id, _editedProduct);
+    } else {
+      Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    }
     Navigator.of(context).pop();
   }
 
@@ -70,6 +102,7 @@ class _EditProductPageState extends State<EditProductPage> {
           child: ListView(
             children: <Widget>[
               TextFormField(
+                initialValue: _initFormValues['title'],
                 decoration: InputDecoration(labelText: 'Title'),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
@@ -85,16 +118,20 @@ class _EditProductPageState extends State<EditProductPage> {
                   return null;
                 },
                 onSaved: (value) {
-                  _editedProduct = Product(
-                    id: null,
-                    title: value,
-                    price: _editedProduct.price,
-                    description: _editedProduct.description,
-                    imageUrl: _editedProduct.imageUrl,
-                  );
+                  setState(() {
+                    _editedProduct.title = value;
+                  });
+                  // _editedProduct = Product(
+                  //   id: null,
+                  //   title: value,
+                  //   price: _editedProduct.price,
+                  //   description: _editedProduct.description,
+                  //   imageUrl: _editedProduct.imageUrl,
+                  // );
                 },
               ),
               TextFormField(
+                initialValue: _initFormValues['price'],
                 decoration: InputDecoration(labelText: 'Price'),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.number,
@@ -115,16 +152,20 @@ class _EditProductPageState extends State<EditProductPage> {
                   return null;
                 },
                 onSaved: (value) {
-                  _editedProduct = Product(
-                    id: null,
-                    title: _editedProduct.title,
-                    price: double.parse(value),
-                    description: _editedProduct.description,
-                    imageUrl: _editedProduct.imageUrl,
-                  );
+                  setState(() {
+                    _editedProduct.price = double.parse(value);
+                  });
+                  // _editedProduct = new Product(
+                  //   id: null,
+                  //   title: _editedProduct.title,
+                  //   price: double.parse(value),
+                  //   description: _editedProduct.description,
+                  //   imageUrl: _editedProduct.imageUrl,
+                  // );
                 },
               ),
               TextFormField(
+                initialValue: _initFormValues['description'],
                 decoration: InputDecoration(labelText: 'Description'),
                 maxLines: 3,
                 keyboardType: TextInputType.multiline,
@@ -139,13 +180,16 @@ class _EditProductPageState extends State<EditProductPage> {
                   return null;
                 },
                 onSaved: (value) {
-                  _editedProduct = Product(
-                    id: null,
-                    title: _editedProduct.title,
-                    price: _editedProduct.price,
-                    description: value,
-                    imageUrl: _editedProduct.imageUrl,
-                  );
+                  setState(() {
+                    _editedProduct.description = value;
+                  });
+                  // _editedProduct = Product(
+                  //   id: null,
+                  //   title: _editedProduct.title,
+                  //   price: _editedProduct.price,
+                  //   description: value,
+                  //   imageUrl: _editedProduct.imageUrl,
+                  // );
                 },
               ),
               Row(
@@ -194,13 +238,16 @@ class _EditProductPageState extends State<EditProductPage> {
                         return null;
                       },
                       onSaved: (value) {
-                        _editedProduct = Product(
-                          id: null,
-                          title: _editedProduct.title,
-                          price: _editedProduct.price,
-                          description: _editedProduct.description,
-                          imageUrl: value,
-                        );
+                        setState(() {
+                          _editedProduct.imageUrl = value;
+                        });
+                        // _editedProduct = Product(
+                        //   id: null,
+                        //   title: _editedProduct.title,
+                        //   price: _editedProduct.price,
+                        //   description: _editedProduct.description,
+                        //   imageUrl: value,
+                        // );
                       },
                     ),
                   ),

@@ -68,6 +68,21 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _products.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _products[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      //TODO
+    }
+  }
+
+  void deleteProduct(String id) {
+    _products.removeWhere((product) => product.id == id);
+    notifyListeners();
+  }
+
   List<Product> get favoriteProducts {
     return _products.where((product) => product.isFavorite).toList();
   }
