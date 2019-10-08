@@ -68,7 +68,7 @@ class _EditProductPageState extends State<EditProductPage> {
   }
 
   void _saveForm() {
-    if (_formKey.currentState.validate()) {
+    if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
