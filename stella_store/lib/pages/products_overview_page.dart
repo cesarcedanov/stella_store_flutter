@@ -5,6 +5,7 @@ import '../organisms/badge.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart.dart';
 import './cart_page.dart';
+import '../providers/products.dart';
 
 enum FilterOptions { FavoritesOnly, All }
 
@@ -15,6 +16,30 @@ class ProductsOverviewPage extends StatefulWidget {
 
 class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
   var _showFavoritesOnly = false;
+  var _isInit = false;
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    if (!_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context).fetchDataAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = true;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +83,11 @@ class _ProductsOverviewPageState extends State<ProductsOverviewPage> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsGrid(_showFavoritesOnly),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGrid(_showFavoritesOnly),
     );
   }
 }

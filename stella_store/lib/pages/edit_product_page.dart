@@ -76,39 +76,41 @@ class _EditProductPageState extends State<EditProductPage> {
     setState(() {
       _isLoading = true;
     });
-    if (_editedProduct.id != null) {
-      Provider.of<Products>(context)
-          .updateProduct(_editedProduct.id, _editedProduct);
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
-    } else {
-      try {
+    try {
+      if (_editedProduct.id != null) {
+        await Provider.of<Products>(context)
+            .updateProduct(_editedProduct.id, _editedProduct);
+      } else {
         await Provider.of<Products>(context, listen: false)
             .addProduct(_editedProduct);
-      } catch (error) {
-        await showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: Text('An error ocurred!'),
-            content: Text(error.toString()),
-            actions: <Widget>[
-              FlatButton(
-                  child: Text('Okay'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  })
-            ],
-          ),
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.of(context).pop();
       }
+    } catch (error) {
+      await showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('An error ocurred!'),
+          content: Text(error.toString()),
+          actions: <Widget>[
+            FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                })
+          ],
+        ),
+      );
     }
+    // finally {
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+    //   Navigator.of(context).pop();
+    // }
+
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   @override
