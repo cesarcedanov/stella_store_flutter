@@ -108,7 +108,6 @@ class Products with ChangeNotifier {
       _products.add(newProduct);
       notifyListeners();
     } catch (error) {
-      print(error);
       throw error;
     }
   }
