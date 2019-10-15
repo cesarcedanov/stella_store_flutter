@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Product with ChangeNotifier {
   String id;
@@ -18,8 +20,27 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavorite() {
-    isFavorite = !isFavorite;
+  void _setFavValue(bool newValue) {
+    isFavorite = newValue;
     notifyListeners();
+  }
+
+  void toggleFavorite() async {
+    final oldValue = isFavorite;
+    _setFavValue(!isFavorite);
+    final url = 'https://stella-store-flutter.firebaseio.com/products/$id.json';
+    try {
+      final response = await http.patch(
+        url,
+        body: json.encode(
+          ({'isFavorite': isFavorite}),
+        ),
+      );
+      if (response.statusCode >= 400) {
+        _setFavValue(oldValue);
+      }
+    } catch (error) {
+      _setFavValue(oldValue);
+    }
   }
 }

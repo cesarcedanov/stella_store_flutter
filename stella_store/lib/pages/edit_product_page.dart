@@ -11,14 +11,19 @@ class EditProductPage extends StatefulWidget {
 
 class _EditProductPageState extends State<EditProductPage> {
   var _isInit = true;
-  var _isLoading = true;
+  var _isLoading = false;
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  var _editedProduct =
-      Product(id: null, title: '', price: 0, description: '', imageUrl: '');
+  var _editedProduct = Product(
+    id: null,
+    title: '',
+    price: 0,
+    description: '',
+    imageUrl: '',
+  );
   var _initFormValues = {
     'title': '',
     'price': '',
