@@ -9,6 +9,7 @@ import './providers/orders.dart';
 import './pages/orders_page.dart';
 import './pages/user_products_page.dart';
 import './pages/edit_product_page.dart';
+import './pages/auth_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           accentColor: Color.fromRGBO(235, 150, 165, 1),
           fontFamily: 'Lato',
         ),
-        home: ProductsOverviewPage(),
+        home: AuthScreen(),
         routes: {
           ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
           CartPage.routeName: (ctx) => CartPage(),
