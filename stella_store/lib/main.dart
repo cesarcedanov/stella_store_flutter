@@ -10,6 +10,7 @@ import './pages/orders_page.dart';
 import './pages/user_products_page.dart';
 import './pages/edit_product_page.dart';
 import './pages/auth_page.dart';
+import './providers/auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,34 +18,40 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: Products(),
-        ),
-        ChangeNotifierProvider.value(
-          value: Cart(),
-        ),
-        ChangeNotifierProvider.value(
-          value: Orders(),
-        )
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false, // NEEDS TO BE REMOVED
-        title: 'Stella Store',
-        theme: ThemeData(
-          primaryColor: Color.fromRGBO(50, 150, 195, 1),
-          accentColor: Color.fromRGBO(235, 150, 165, 1),
-          fontFamily: 'Lato',
-        ),
-        home: AuthScreen(),
-        routes: {
-          ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
-          CartPage.routeName: (ctx) => CartPage(),
-          OrdersPage.routeName: (ctx) => OrdersPage(),
-          UserProductsPage.routeName: (ctx) => UserProductsPage(),
-          EditProductPage.routeName: (ctx) => EditProductPage(),
-        },
-      ),
-    );
+        providers: [
+          ChangeNotifierProvider.value(
+            value: Auth(),
+          ),
+          ChangeNotifierProxyProvider<Auth, Products>(
+            builder: (ctx, auth, previousProducts) => Products(auth.token,
+                previousProducts == null ? [] : previousProducts.products),
+          ),
+          ChangeNotifierProvider.value(
+            value: Cart(),
+          ),
+          ChangeNotifierProxyProvider<Auth, Orders>(
+            builder: (ctx, auth, previousOrders) => Orders(auth.token,
+                previousOrders == null ? [] : previousOrders.orders),
+          )
+        ],
+        child: Consumer<Auth>(
+          builder: (ctx, auth, _) => MaterialApp(
+            debugShowCheckedModeBanner: false, // NEEDS TO BE REMOVED
+            title: 'Stella Store',
+            theme: ThemeData(
+              primaryColor: Color.fromRGBO(50, 150, 195, 1),
+              accentColor: Color.fromRGBO(235, 150, 165, 1),
+              fontFamily: 'Lato',
+            ),
+            home: auth.isAuth ? ProductsOverviewPage() : AuthScreen(),
+            routes: {
+              ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
+              CartPage.routeName: (ctx) => CartPage(),
+              OrdersPage.routeName: (ctx) => OrdersPage(),
+              UserProductsPage.routeName: (ctx) => UserProductsPage(),
+              EditProductPage.routeName: (ctx) => EditProductPage(),
+            },
+          ),
+        ));
   }
 }

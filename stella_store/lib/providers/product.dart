@@ -25,10 +25,11 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleFavorite() async {
+  void toggleFavorite(String authToken) async {
     final oldValue = isFavorite;
     _setFavValue(!isFavorite);
-    final url = 'https://stella-store-flutter.firebaseio.com/products/$id.json';
+    final url =
+        'https://stella-store-flutter.firebaseio.com/products/$id.json?auth=$authToken';
     try {
       final response = await http.patch(
         url,

@@ -25,7 +25,7 @@ class OrdersPage extends StatelessWidget {
             } else {
               if (dataSnapshot.error != null) {
                 return Center(
-                  child: Text('AN error ocurred'),
+                  child: Text('An error ocurred'),
                 );
               } else {
                 return Consumer<Orders>(
