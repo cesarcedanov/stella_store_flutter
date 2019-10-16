@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './pages/splash_page.dart';
 import './pages/products_overview_page.dart';
 import './pages/product_detail_page.dart';
 import './pages/cart_page.dart';
@@ -47,7 +48,15 @@ class MyApp extends StatelessWidget {
               accentColor: Color.fromRGBO(235, 150, 165, 1),
               fontFamily: 'Lato',
             ),
-            home: auth.isAuth ? ProductsOverviewPage() : AuthScreen(),
+            home: auth.isAuth
+                ? ProductsOverviewPage()
+                : FutureBuilder(
+                    future: auth.tryAuthLogin(),
+                    builder: (ctx, authSnapshot) =>
+                        authSnapshot.connectionState == ConnectionState.waiting
+                            ? SplashScreen()
+                            : AuthScreen(),
+                  ),
             routes: {
               ProductDetailPage.routeName: (ctx) => ProductDetailPage(),
               CartPage.routeName: (ctx) => CartPage(),
