@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/cart.dart' show Cart;
 import '../providers/orders.dart';
 import '../organisms/cart_item.dart';
+import './orders_page.dart';
 
 class CartPage extends StatelessWidget {
   static const routeName = '/cart';
@@ -91,7 +92,7 @@ class _OrderButtonState extends State<OrderButton> {
                 _isLoading = false;
               });
               widget.cart.clear();
-              // Navigator.of(context).pushReplacementNamed(OrdersPage.routeName);
+              Navigator.of(context).pushReplacementNamed(OrdersPage.routeName);
             },
     );
   }

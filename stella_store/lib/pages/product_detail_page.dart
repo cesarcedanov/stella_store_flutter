@@ -10,18 +10,19 @@ class ProductDetailPage extends StatelessWidget {
     final product =
         Provider.of<Products>(context, listen: false).getById(productId);
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(product.title),
-      // ),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Container(
-                child: Text(product.title),
-                color: Colors.black54,
+              title: Text(
+                product.title,
+                softWrap: true,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    backgroundColor: Colors.black26),
               ),
               background: Hero(
                 tag: product.id,
@@ -54,6 +55,9 @@ class ProductDetailPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                     softWrap: true,
                   ),
+                ),
+                SizedBox(
+                  height: 800,
                 ),
               ],
             ),

@@ -19,7 +19,7 @@ class _OrderItemState extends State<OrderItem> {
     final products = widget.order.products.toList();
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
-      height: _expanded ? min(products.length * 20.00 + 125, 250) : 125,
+      height: _expanded ? min(products.length * 20.00 + 125, 250) : 100,
       child: Card(
         margin: EdgeInsets.all(10),
         child: Column(
