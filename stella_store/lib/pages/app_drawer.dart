@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import './orders_page.dart';
 import './user_products_page.dart';
 import '../providers/auth.dart';
+import '../helpers/custom_route.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -27,6 +28,11 @@ class AppDrawer extends StatelessWidget {
             title: Text('Orders'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(OrdersPage.routeName);
+              // Navigator.of(context).pushReplacement(
+              //   CustomRoute(
+              //     builder: (ctx) => OrdersPage(),
+              //   ),
+              // );
             },
           ),
           Divider(),

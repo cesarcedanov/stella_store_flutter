@@ -12,6 +12,7 @@ import './pages/user_products_page.dart';
 import './pages/edit_product_page.dart';
 import './pages/auth_page.dart';
 import './providers/auth.dart';
+import './helpers/custom_route.dart';
 
 void main() => runApp(MyApp());
 
@@ -44,10 +45,13 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false, // NEEDS TO BE REMOVED
             title: 'Stella Store',
             theme: ThemeData(
-              primaryColor: Color.fromRGBO(50, 150, 195, 1),
-              accentColor: Color.fromRGBO(235, 150, 165, 1),
-              fontFamily: 'Lato',
-            ),
+                primaryColor: Color.fromRGBO(50, 150, 195, 1),
+                accentColor: Color.fromRGBO(235, 150, 165, 1),
+                fontFamily: 'Lato',
+                pageTransitionsTheme: PageTransitionsTheme(builders: {
+                  TargetPlatform.android: CustomPageTransitionBuilder(),
+                  TargetPlatform.iOS: CustomPageTransitionBuilder(),
+                })),
             home: auth.isAuth
                 ? ProductsOverviewPage()
                 : FutureBuilder(
