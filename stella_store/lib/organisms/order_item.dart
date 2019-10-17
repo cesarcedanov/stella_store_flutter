@@ -17,27 +17,30 @@ class _OrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     final products = widget.order.products.toList();
-    return Card(
-      margin: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            title: Text('\$${widget.order.amount.toStringAsFixed(2)}'),
-            subtitle: Text(DateFormat('EEEE dd/MM/yyyy hh:mm')
-                .format(widget.order.dateTime)),
-            trailing: IconButton(
-              icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-              onPressed: () {
-                setState(() {
-                  _expanded = !_expanded;
-                });
-              },
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      height: _expanded ? min(products.length * 20.00 + 125, 250) : 125,
+      child: Card(
+        margin: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              title: Text('\$${widget.order.amount.toStringAsFixed(2)}'),
+              subtitle: Text(DateFormat('EEEE dd/MM/yyyy hh:mm')
+                  .format(widget.order.dateTime)),
+              trailing: IconButton(
+                icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
+                onPressed: () {
+                  setState(() {
+                    _expanded = !_expanded;
+                  });
+                },
+              ),
             ),
-          ),
-          if (_expanded)
-            Container(
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              height: min(products.length * 20.00 + 20, 150),
+              height: _expanded ? min(products.length * 20.00 + 20, 150) : 0,
               child: ListView.builder(
                 itemCount: products.length,
                 itemBuilder: (ctx, index) => Row(
@@ -56,7 +59,8 @@ class _OrderItemState extends State<OrderItem> {
                 ),
               ),
             )
-        ],
+          ],
+        ),
       ),
     );
   }
